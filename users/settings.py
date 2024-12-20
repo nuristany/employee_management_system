@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,17 +128,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.UserAccount'
 
 
-# Email backend configuration
+from dotenv import load_dotenv
+# Load environment variables from .env file
+load_dotenv()
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# SMTP server settings
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'  # For Gmail; replace with your email provider's SMTP server
-EMAIL_PORT = 2525
-EMAIL_USE_TLS = True  # Use TLS for security
-EMAIL_HOST_USER = '76c03808f2fa39'  # Replace with your email address
-EMAIL_HOST_PASSWORD = '328317c84e4f46'
-DEFAULT_FROM_EMAIL = 'nuristanyqais@gmail.com'
-
-#EMAIL_HOST_PASSWORD = 'rhpkvwahegrncusx'
-
-
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))  # Default to 587 if not set
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS') == 'True'  # Check if 'True' in the env variable
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
